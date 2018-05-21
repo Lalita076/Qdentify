@@ -35,8 +35,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.qdentify.mamiew.q8.R;
-//import com.qdentify.mamiew.q8.Upload;
-import com.squareup.picasso.Picasso;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -48,8 +47,6 @@ import java.util.UUID;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
 public class AddPatientActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText firstName, lastName, dob, contact, disease, drugAllergy, regDosing, hospitalName;
@@ -59,13 +56,13 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
     private ImageView imageView;
     private Calendar mCurrrntDate;
     private int day, month, year;
+    private Uri downloadUrl;
 
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
 
     private DatabaseReference firebaseDatabase;
-    private StorageReference firebaseStorage;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -83,8 +80,6 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
 
         initInstances();
 
-        //save();
-
         choosePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +90,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 uploadFile();
+
             }
         });
     }
@@ -124,9 +120,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        // firebaseStorage = FirebaseStorage.getInstance().getReference("profile-pic");
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient").child("data");
-        //firebaseDatabase_Hospital = FirebaseDatabase.getInstance().getReference().child("Hospital");
 
         datePick.setOnClickListener(this);
     }
@@ -141,10 +135,11 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         String patientRegDosing = regDosing.getText().toString().trim();
         String patientDrugAllergy = drugAllergy.getText().toString().trim();
         String patientHospital = hospitalName.getText().toString().trim();
-        //String patientPic =  downloadUrl;/*filePath.getPath().toString().trim();*/
+        String patientThumbnail = downloadUrl.toString();
 
 
         String newPatient = firebaseDatabase.push().getKey();
+        Toast.makeText(this,"Patient key :"+newPatient,Toast.LENGTH_SHORT).show();
 
         Map<String, Object> map = new HashMap<>();
         map.put("firstName", patientName);
@@ -156,8 +151,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         map.put("regDosing", patientRegDosing);
         map.put("drugAllergy", patientDrugAllergy);
         map.put("hospitalName", patientHospital);
-        //map.put("thumbnail", patientPic);
-        // map.put("hospital",patientHospital);
+        map.put("thumbnail",patientThumbnail);
 
         firebaseDatabase.child(newPatient).setValue(map);
     }
@@ -175,16 +169,13 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             filePath = data.getData();
-            // Log.d("Add Patient", String.valueOf(filePath));
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     @Override
@@ -197,7 +188,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.ok) {
-            //save();
+            uploadFile();
             Toast.makeText(this, "Add patient success", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -217,11 +208,6 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    /*private String getFileExtension(Uri uri){
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }*/
     public void uploadFile()
     {
         if (filePath != null)
@@ -230,18 +216,18 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            final StorageReference ref = storageReference.child("profile-pic/"+ UUID.randomUUID().toString()).child(filePath.getLastPathSegment());
+            final StorageReference ref = storageReference.child("profile-pic/"/*+ UUID.randomUUID().toString()*/).child(filePath.getLastPathSegment());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
                     {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
                         {
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            firebaseDatabase.child("patient").child("data").child("thumbnail").setValue(downloadUrl.toString());
 
                             progressDialog.dismiss();
                             Toast.makeText(AddPatientActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+
+                            downloadUrl = taskSnapshot.getDownloadUrl();
                             save();
                         }
                     })

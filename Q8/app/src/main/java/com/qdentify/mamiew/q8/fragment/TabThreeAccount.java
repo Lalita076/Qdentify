@@ -46,7 +46,6 @@ public class TabThreeAccount extends Fragment implements View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        user = firebaseAuth.getCurrentUser();
 
         //Toast.makeText(this,"Welcome "+ user.getEmail(),Toast.LENGTH_SHORT);
 
