@@ -43,8 +43,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
-
         initInstances();
+        btnRegister.setOnClickListener(this);
+        btnToSignIn.setOnClickListener(this);
+
     }
 
     private void initInstances() {
@@ -56,8 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etEmail = (EditText)findViewById(R.id.et_mail);
         etPassword = (EditText)findViewById(R.id.et_password);
 
-        btnRegister.setOnClickListener(this);
-        btnToSignIn.setOnClickListener(this);
+
     }
 
     @Override
@@ -87,9 +88,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         if(TextUtils.isEmpty(password)){
             Toast.makeText(this,"Please enter password",Toast.LENGTH_SHORT).show();
-
+            return;
         }
-        progressDialog.setMessage("Register User...");
+        progressDialog.setMessage("Registering please wait..");
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email, password)

@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.qdentify.mamiew.q8.R;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +77,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                 //       .setAction("Action", null).show();
+                //       .setAction("Action", null).show();
                 Intent addPerson = new Intent(MainActivity.this, AddPatientActivity.class);
                 startActivity(addPerson);
 
             }
         });
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if (firebaseAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+
+        }
+
+        user = firebaseAuth.getCurrentUser();
+
+        //Toast.makeText(this,"Welcome "+ user.getEmail(),Toast.LENGTH_SHORT);
 
     }
 
@@ -104,8 +121,19 @@ public class MainActivity extends AppCompatActivity {
             scanner();
             return true;
         }
+        if (id == R.id.logout) {
+            exit();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void exit() {
+        firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(this, LoginActivity.class));
+
     }
 
     private void scanner() {
@@ -124,17 +152,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         String url = result.getContents();
-        if(result != null){
-            if(result.getContents()==null){
+        if (result != null) {
+            if (result.getContents() == null) {
                 Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
                 startActivity(intent);
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -154,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
 
-            switch (position){
+            switch (position) {
                 case 0:
                     TabOnePatientsFB tabOne = new TabOnePatientsFB();
                     return tabOne;
@@ -176,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public CharSequence getPageTitle(int position){
-            switch (position){
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
                 case 0:
                     return "SECTION 1";
                 case 1:
