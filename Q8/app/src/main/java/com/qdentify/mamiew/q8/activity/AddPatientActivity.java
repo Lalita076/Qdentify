@@ -56,6 +56,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
     private ImageView imageView;
     private Calendar mCurrrntDate;
     private int day, month, year;
+    public String status;
     private Uri downloadUrl;
 
 
@@ -78,6 +79,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add patient Profile");
 
+        status = "0";
         initInstances();
 
         choosePic.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +138,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         String patientDrugAllergy = drugAllergy.getText().toString().trim();
         String patientHospital = hospitalName.getText().toString().trim();
         String patientThumbnail = downloadUrl.toString();
+        String patientStatus = status.toString().trim();
 
 
         String newPatient = firebaseDatabase.push().getKey();
@@ -152,6 +155,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         map.put("drugAllergy", patientDrugAllergy);
         map.put("hospitalName", patientHospital);
         map.put("thumbnail",patientThumbnail);
+        map.put("status",patientStatus);
 
         firebaseDatabase.child(newPatient).setValue(map);
     }

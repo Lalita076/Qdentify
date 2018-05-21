@@ -32,6 +32,7 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
     private PatientListAdapterFB pAadapter;
     private ProgressDialog progressDialog;
 
+    private List<String> key;
     private List<PatientListModelFB> result;
 
     private FirebaseDatabase firebaseDatabase;
@@ -50,6 +51,7 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
         databaseReference = firebaseDatabase.getReference("patient/data");
 
         result = new ArrayList<>();
+        key = new ArrayList<>();
 
         pRecyclerView = (RecyclerView) rootView.findViewById(R.id.patient_view);
         pRecyclerView.setHasFixedSize(true);
@@ -72,6 +74,7 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 result.add(dataSnapshot.getValue(PatientListModelFB.class));
+                key.add(dataSnapshot.getKey());
                 pAadapter.notifyDataSetChanged();
 
                 progressDialog.dismiss();
@@ -102,11 +105,11 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(getActivity(), "You click on card", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "You click on card", Toast.LENGTH_SHORT).show();
         Intent info = new Intent(getActivity(), PersonInfoActivity.class);
         Log.d("TabOne","pParcelable going");
         PatientListModelFB paParcelable = new PatientListModelFB();
-        info.putExtra("key", result.get(position).key);
+        info.putExtra("key", key.get(position));
         info.putExtra("name", result.get(position).firstName+" "+result.get(position).lastName);
         info.putExtra("dob", result.get(position).dob);
         info.putExtra("bloodType", result.get(position).bloodType);
@@ -116,6 +119,8 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
         info.putExtra("drugAllergy", result.get(position).drugAllergy);
         info.putExtra("hospital", result.get(position).hospitalName);
         info.putExtra("thumbnail", result.get(position).thumbnail);
+        info.putExtra("status",result.get(position).status);
+
 
         startActivity(info);
     }

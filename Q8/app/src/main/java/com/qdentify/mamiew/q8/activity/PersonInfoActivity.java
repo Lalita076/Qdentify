@@ -1,6 +1,9 @@
 package com.qdentify.mamiew.q8.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -10,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -36,9 +40,10 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
     TextView tvHeadName, tvBloodType, tvDob, tvDisease, tvDrugAllergy, tvRegDose, tvHospital, tvContact;
     ImageView imThumbnail;
     Switch swActiveQR;
-    String key, headName, bloodType, dob, disease, drugAllergy, regDosing, hospital, contact, thumbnail;
+    String key, headName, bloodType, dob, disease, drugAllergy, regDosing, hospital, contact, thumbnail, status;
     CardView lastTreatCard;
 
+    private DatabaseReference firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +67,23 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         drugAllergy = intent.getStringExtra("drugAllergy");
         hospital = intent.getStringExtra("hospital");
         thumbnail = intent.getStringExtra("thumbnail");
-
+        status = intent.getStringExtra("status");
+        Toast.makeText(this,"Key is  "+ key,Toast.LENGTH_SHORT).show();
 
         bindingData();
 
+        swActiveQR.setOnCheckedChangeListener(this);
+        lastTreatCard.setOnClickListener(this);
+    }
+
+    private void checkSwitch() {
+        if(status.equals("active")){
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key);
+            swActiveQR.setChecked(true);
+        } else if(status.equals("inactive")) {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key);
+            swActiveQR.setChecked(false);
+        }
     }
 
     private void bindingData() {
@@ -78,6 +96,8 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         tvDrugAllergy.setText(drugAllergy);
         tvHospital.setText(hospital);
         Picasso.with(PersonInfoActivity.this).load(thumbnail).into(imThumbnail);
+
+        checkSwitch();
 
     }
 
@@ -95,9 +115,6 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         imThumbnail = (ImageView)findViewById(R.id.im_thumbnail);
 
         lastTreatCard = (CardView)findViewById(R.id.card_lasttreat);
-
-        swActiveQR.setOnCheckedChangeListener(this);
-        lastTreatCard.setOnClickListener(this);
 
     }
 
@@ -141,16 +158,24 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked){
+        if(isChecked && status.equals("active")){
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key).child("status");
+            firebaseDatabase.setValue("active");
             Toast.makeText(this,"QR is Active",Toast.LENGTH_SHORT).show();
         }else {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key).child("status");
+            firebaseDatabase.setValue("inactive");
             Toast.makeText(this, "QR is Inactive",Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     @Override
     public void onClick(View v) {
         Intent lastTreat = new Intent(PersonInfoActivity.this,LastTreatActivity.class);
         startActivity(lastTreat);
     }
+
+
 }
