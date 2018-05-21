@@ -1,0 +1,25 @@
+Name
+DateOfBirth
+Contact
+Description/Appearance ??
+-Height
+-Weight
+-Stigma
+
+BloodType
+Diseases
+MedicalAllergies
+Hopital
+
+<string name="name_p1">Christopher Hudson</string>
+    <string name="firs_tname_p1">Christopher</string>
+    <string name="last_name_p1">Hudson</string>
+    <string name="des_p1">09/02/2010, AB+, G6PD</string>
+    <string name="dob_p1">09/02/2010</string>
+    <string name="blood_p1">AB+</string>
+    <string name="desease_p1">G5PD</string>
+    <string name="reg_dosing_p1">-</string>
+    <string name="drug_allergy_p1">Furazolidone</string>
+    <string name="hospital_p1">Bangpakok Hospital</string>
+    <string name="contact_p1">089-111-1234</string>
+

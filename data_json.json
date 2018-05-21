@@ -1,0 +1,16 @@
+{
+	"Name": "Christopher Hudson",
+	"DateOfBirth": "09/02/2010",
+	"BloodType": "AB+",
+	"Diseases": [{
+		"d1": "G6PD"
+	}],
+	"RegularDosing": [{
+		"r1": "-"
+	}],
+	"DrugAllergies": [{
+		"d1": "Furazolidone"
+	}],
+	"Hopital": "Bangpakok Hospital",
+	"Contact": "089-111-1234"
+}

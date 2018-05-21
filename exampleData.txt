@@ -1,0 +1,21 @@
+**Patient**
+
+ patientid  | patientname | patientsurname |  birthday  | allergic | count | hospitalid | diseaseid
+------------+-------------+----------------+------------+----------+-------+------------+-----------
+          4 | name4       | eiei4          | 1995-10-06 |          |     1 |            |
+          1 | name        | eiei           | 2015-01-02 |          |     2 |            |
+          2 | name2       | eiei2          | 2018-04-15 |          |     3 |            |
+          3 | name3       | eiei3          | 1963-02-11 |          |     4 |            |
+ 1905133426 | Alex        | Allow          | 1997-10-16 | X        |     5 |            |
+  971249312 | Emma        | Pencil         | 1995-06-17 | Y        |     6 | 13         | 25
+ 1926833684 | Pracha      | Pasayawat      | 1987-10-20 |          |     7 |            |
+
+
+**Caregiver**
+
+ careid | carename | caresurname | patientid
+--------+----------+-------------+------------
+      1 | fifa     | eiei        |          4
+      2 | apple    | eiei        |          3
+      4 | Bung     | Pencil      |  971249312
+      6 | Seasai   | Pasayawat   | 1926833684

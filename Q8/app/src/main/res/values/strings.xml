@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Qdentify</string>
+    <string name="tab_text_1">Patients</string>
+    <string name="tab_text_2">Notification</string>
+    <string name="tab_text_3">Account</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="dob">Date of birth</string>
+    <string name="blood">Blood type</string>
+    <string name="desease">Congenital desease</string>
+    <string name="reg_dosing">Regular dosing</string>
+    <string name="drug_allergy">Drug allergy</string>
+    <string name="hospital">Hospital</string>
+    <string name="contact">Contact</string>
+
+    <string name="name_p1">Pracha Pasayawat</string>
+    <string name="first_name_p1">Pracha</string>
+    <string name="last_name_p1">Pasayawat</string>
+    <string name="des_p1">1987-10-20, AB+, XY SEX REVERSAL 1</string>
+    <string name="dob_p1">1987-10-20</string>
+    <string name="blood_p1">AB+</string>
+    <string name="desease_p1">XY SEX REVERSAL 1</string>
+    <string name="reg_dosing_p1">-</string>
+    <string name="drug_allergy_p1">-</string>
+    <string name="hospital_p1">Suthisarn Health Care</string>
+    <string name="contact_p1">0 2275 6351</string>
+
+
+    <string-array name="blood_type">
+        <item>A</item>
+        <item>B</item>
+        <item>O</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
+    <string-array name="hospital">
+        <item>Hospital Name</item>
+        <item>"@hospitalList"</item>
+    </string-array>
+
+    <string name="pinfo_menu_1">Last treat</string>
+    <string name="pinfo_menu_2">Purchase QR tag</string>
+    <string name="title_activity_person_info">PersonInfoActivity</string>
+    <string name="todo">TODO</string>
+
+    <string name="date_and_time1">Yesterday at 3:30 PM</string>
+    <string name="locate1">991 Rama 1 Road, Pathumwan Bangkok 10330, Thailand.</string>
+    <string name="noti_content">Pracha Pasayawat has been found.</string>
+
+    <string name="account_name">Cherry</string>
+    <string name="account_email">Cherry.q@gmail.com</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+</resources>

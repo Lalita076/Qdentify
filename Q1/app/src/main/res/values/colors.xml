@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#062e2e</color>
+    <color name="colorPrimaryDark">#062E2E</color>
+    <color name="colorAccent">#0d3938</color>
+    <color name="text_color_primary">#ffffff</color>
+    <color name="foreground_material_light">#13eaa2</color>
+    <color name="background_material_light">#062e2e</color>
+    <color name="salmon">#ff5e3c</color>
+</resources>

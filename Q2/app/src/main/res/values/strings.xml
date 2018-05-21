@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Q2</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_viewpatient">View Patients</string>
+</resources>

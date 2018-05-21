@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    tools:context="com.qdentify.mamiew.q6.AddPersonActivity">
+
+    <include layout="@layout/bar_view_patients"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvPatientInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Patient Info" />
+
+        <EditText
+            android:id="@+id/firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="First name is required"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="First name"
+            android:textAppearance="@style/TextAppearance.Design.Hint" />
+
+        <EditText
+            android:id="@+id/lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="Last name is required"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Last name"
+            android:textAppearance="@style/TextAppearance.Design.Hint" />
+
+        <EditText
+            android:id="@+id/dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="MM/DD/YYYY"
+            android:ems="10"
+            android:inputType="date"
+            android:text="Date of Birth" />
+
+        <EditText
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="phone"
+            android:text="Contact" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

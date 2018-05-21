@@ -1,0 +1,11 @@
+Dark green 062e2e
+Light green 13eaa2
+Salmon ff5e3c
+red fd4701
+gray 8b8b8b
+
+
+dark green 23625d
+primary 3c9176
+white fafafa
+Salmon ff5e3c

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "652797883198",
+    "firebase_url": "https://qdentify-28cf8.firebaseio.com",
+    "project_id": "qdentify-28cf8",
+    "storage_bucket": "qdentify-28cf8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652797883198:android:47776b3c00707141",
+        "android_client_info": {
+          "package_name": "ApplicationQdentify.data"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "652797883198-ud6jvt83h3vk1q2tp5ucam7l9obstteb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkU8SN03iPiuXsguK9djxv581hnnjd7rU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

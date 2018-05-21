@@ -1,0 +1,8 @@
+Q1 เปลี่ยนสีธีมไม่ได้
+Q2 เปลี่ยนชื่อ app bar ไม่ได้ + ธีมมั่วไปหมด
+Q3 ยังเปลี่ยนชื่อ app bar ไม่ได้
+Q4 ยังเปลี่ยนชื่อ app bar ไม่ได้ แต่รู้วิธีกดเปลี่ยนหน้าละ 
+Q5 รู้วิธีกดเปลี่ยนหน้า เลือกหน้าที่จะรัน ใช้ device เป็นตัวรัน แต่อยากเปลี่ยนหน้า main เป็น tab
+Q6 ทำถึงจะดู Info patient กด ไม่ได้ เพราะ tabOne เป็น fragment ไม่ใช่ activity build ติด warning น่าจะเพราะ implement/compile ที่ gradle
+Q7 ไม่ใช้ fragmentละ เริ่มใหม่อีกครั้ง มีnavigaton drawer, เปลี่ยนใจ เป็น fragment ดีกว่า เจอวิธีเปิด activity จาก fragmentละ 
+Q8 อ่าน json จาก sever ไม่สำเร็จ ตรง onResponse ใน TabOne จะเปลี่ยนจาก cardview เป็น list view ใน Q9 ละ ตามหนูเนย

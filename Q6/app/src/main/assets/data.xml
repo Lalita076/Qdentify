@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<patients>
+    <patient>
+        <id>1</id>
+        <name>Christopher Hudson</name>
+        <description>09/02/2010, AB+, G6PD</description>
+    </patient>
+</patients>
+
+<!-- <dob>09/02/2010</dob>
+        <bloodtype>AB+</bloodtype>
+        <congen_disease>G6PD</congen_disease>
+        <regular>-</regular>
+        <allergy_dosing>Furazolidone</allergy_dosing>
+        <contact>089-111-1111</contact>
+-->

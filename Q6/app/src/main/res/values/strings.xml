@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Qdentify</string>
+    <string name="act_name_add">Add patient</string>
+    <string name="act_pcontent">Patients</string>
+    <string name="act_pInfo">Patient Info</string>
+    <string name="tab_text_1">Patients</string>
+    <string name="tab_text_2">Notification</string>
+    <string name="tab_text_3">Account</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>
