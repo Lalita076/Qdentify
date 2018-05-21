@@ -76,21 +76,21 @@
 
 
         <Button
-            android:id="@+id/btn_register"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:text="Sign in"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginTop="50dp"/>
-
-        <Button
             android:id="@+id/btn_signin"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
+            android:text="Login"
+            android:textColor="@color/colorWhite"
             android:background="@color/colorPrimary"
+            android:layout_marginTop="50dp"/>
+
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
             android:text="Register now"
             android:layout_marginTop="80dp"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
 </LinearLayout>

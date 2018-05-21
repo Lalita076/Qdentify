@@ -12,5 +12,10 @@
         android:title=""
         android:icon="@drawable/ic_menu_scanner"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/logout"
+        android:title=""
+        android:icon="@drawable/ic_exit_to_app"
+        app:showAsAction="always"/>
 
 </menu>

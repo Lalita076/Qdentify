@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,39 +27,38 @@ import com.qdentify.mamiew.q8.activity.LoginActivity;
 import com.qdentify.mamiew.q8.dao.UserDataModel;
 
 public class TabThreeAccount extends Fragment implements View.OnClickListener {
-    private Button btnLogout;
+    //private Button btnLogout;
     private TextView userName, email, address;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference_user;
 
     private FirebaseAuth firebaseAuth;
-
+    private FirebaseUser user;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_three_account,container,false);
+        View rootView = inflater.inflate(R.layout.tab_three_account, container, false);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference_user = firebaseDatabase.getReference().child("user/user-data/user1");
+        //firebaseDatabase = FirebaseDatabase.getInstance();
+        //databaseReference_user = firebaseDatabase.getReference().child("user/user-data/user1");
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if(firebaseAuth.getCurrentUser()==null){
-            //startActivity(new Intent(getContext(), LoginActivity.class));
-        //}
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //Toast.makeText(this,"Welcome "+ user.getEmail(),Toast.LENGTH_SHORT);
 
         initInstances(rootView);
+
+        email.setText(user.getEmail());
 
         //bindingData();
         //bind();
         return rootView;
     }
 
-    private void bind() {
+    /*private void bind() {
         databaseReference_user.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,18 +99,18 @@ public class TabThreeAccount extends Fragment implements View.OnClickListener {
     */
     private void initInstances(View rootView) {
 
-        email = (TextView)rootView.findViewById(R.id.tv_email);
-        address = (TextView)rootView.findViewById(R.id.tv_address);
+        email = (TextView) rootView.findViewById(R.id.tv_email);
+        address = (TextView) rootView.findViewById(R.id.tv_address);
 
-        btnLogout = (Button)rootView.findViewById(R.id.btn_logout);
-        btnLogout.setOnClickListener(this);
+        //btnLogout = (Button)rootView.findViewById(R.id.btn_logout);
+        //btnLogout.setOnClickListener(this);
+
+
     }
 
     @Override
     public void onClick(View v) {
-        if(v==btnLogout){
-
-        }
+        //if(v==btnLogout){       }
 
     }
 }

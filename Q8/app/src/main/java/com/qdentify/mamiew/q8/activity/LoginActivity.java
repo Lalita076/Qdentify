@@ -25,7 +25,7 @@ import com.qdentify.mamiew.q8.dao.UserDataModel;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnToRegister, btnSignIn;
-    EditText etPassword,etEmail;
+    EditText etPassword, etEmail;
 
     ProgressDialog progressDialog;
 
@@ -39,53 +39,54 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser() !=null){
+        if (firebaseAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
         initInstances();
 
+        btnToRegister.setOnClickListener(this);
+        btnSignIn.setOnClickListener(this);
+
     }
 
     private void initInstances() {
 
-        btnToRegister = (Button)findViewById(R.id.btn_register);
-        btnSignIn = (Button)findViewById(R.id.btn_signin);
+        btnToRegister = (Button) findViewById(R.id.btn_register);
+        btnSignIn = (Button) findViewById(R.id.btn_signin);
 
-        etEmail = (EditText)findViewById(R.id.et_mail);
-        etPassword = (EditText)findViewById(R.id.et_password);
-
-        btnToRegister.setOnClickListener(this);
-        btnSignIn.setOnClickListener(this);
+        etEmail = (EditText) findViewById(R.id.et_mail);
+        etPassword = (EditText) findViewById(R.id.et_password);
     }
 
     @Override
     public void onClick(View view) {
-        if(view==btnSignIn){
+        if (view == btnSignIn) {
             signIn();
         }
-        if(view==btnToRegister){
-            startActivity(new Intent(this,RegisterActivity.class));
+        if (view == btnToRegister) {
+            startActivity(new Intent(this, RegisterActivity.class));
 
         }
 
     }
 
     private void signIn() {
-       String email = etEmail.getText().toString().trim();
-       String password = etPassword.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             //emial is empty
-            Toast.makeText(this, "Please enter mail", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(this, "Please enter mail", Toast.LENGTH_SHORT).show();
+            ;
             return;
         }
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_SHORT).show();
-
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
+            return;
         }
-        progressDialog.setMessage("Register User...");
+        progressDialog.setMessage("Login Please Wait");
         progressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -93,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }
