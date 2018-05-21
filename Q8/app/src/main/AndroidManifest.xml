@@ -21,7 +21,11 @@
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.AddPatientActivity" />
         <activity android:name=".activity.PersonInfoActivity" />
@@ -35,11 +39,7 @@
         <activity android:name=".activity.EditCareGiverActivity" />
         <activity android:name=".activity.AddLastTreateActivity" />
         <activity android:name=".activity.RegisterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.LoginActivity">
 

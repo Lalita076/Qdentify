@@ -45,17 +45,16 @@ public class TabThreeAccount extends Fragment implements View.OnClickListener {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser()==null){
-            startActivity(new Intent(getContext(), LoginActivity.class));
-
-        }
+        //if(firebaseAuth.getCurrentUser()==null){
+            //startActivity(new Intent(getContext(), LoginActivity.class));
+        //}
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         initInstances(rootView);
 
         //bindingData();
-        bind();
+        //bind();
         return rootView;
     }
 
