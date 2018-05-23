@@ -25,6 +25,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.qdentify.mamiew.q8.R;
 import com.qdentify.mamiew.q8.dao.UserDataModel;
 
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnRegister, btnToSignIn;
     EditText etEmail, etPassword;
@@ -32,6 +37,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     FirebaseAuth firebaseAuth;
 
+    DatabaseReference firebaseDatabase;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +46,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         progressDialog = new ProgressDialog(this);
 
+
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+           /* String user_id = firebaseAuth.getCurrentUser().getUid();
+            Toast.makeText(RegisterActivity.this,"UID :"+user_id,Toast.LENGTH_LONG).show();
+            DatabaseReference user = firebaseDatabase.child(user_id);*/
         }
         initInstances();
         btnRegister.setOnClickListener(this);
@@ -52,34 +64,40 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void initInstances() {
 
-
+	
+	
         btnRegister = (Button) findViewById(R.id.btn_register);
         btnToSignIn = (Button) findViewById(R.id.btn_signin);
 
         etEmail = (EditText) findViewById(R.id.et_mail);
         etPassword = (EditText) findViewById(R.id.et_password);
 
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_register:
-                register();
-                break;
-            case R.id.btn_signin:
-                finish();
-                Intent singin = new Intent(getApplicationContext(), LoginActivity.class);
-                Toast.makeText(RegisterActivity.this, "go to Login", Toast.LENGTH_SHORT).show();
-                startActivity(singin);
-                break;
+        if (view==btnRegister){
+            register();
         }
+        else if(view==btnToSignIn){
+            //login();
+            Intent singin = new Intent(getApplicationContext(),LoginActivity.class);
+            Toast.makeText(RegisterActivity.this, "go to Login",Toast.LENGTH_SHORT).show();
+            startActivity(singin);
+
+           // Toast.makeText(RegisterActivity.this, "Caregiver id :",Toast.LENGTH_SHORT).show();
+        }
+
+        /*Intent login = new Intent(RegisterActivity.this,MainActivity.class);
+        startActivity(login);*/
+
     }
 
     private void register() {
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+        final String email = etEmail.getText().toString().trim();
+        final String password = etPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(email)) {
             //emial is empty
@@ -97,16 +115,28 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+
+                        if(task.isSuccessful()){
+                            String user_id2 = firebaseAuth.getCurrentUser().getUid();
+                            firebaseDatabase.child(user_id2).child("userEmail").setValue(email);
+                            firebaseDatabase.child(user_id2).child("userPassword").setValue(password);
                             finish();
+
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();
+							
                         } else {
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
                                 Toast.makeText(getApplicationContext(),"You are already register",Toast.LENGTH_SHORT);
                             }else {
                                 Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
                             }
+
+                            Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_LONG).show();
+
+                        }
+                        else{
+                            Toast.makeText(RegisterActivity.this, "Could not register.. please try again", Toast.LENGTH_SHORT).show();
                         }
 
                     }

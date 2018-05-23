@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 public class PatientListModelFB {
-    public String firstName, lastName, contact, bloodType, dob, disease, key, thumbnail, regDosing, drugAllergy, hospitalName;
+    public String firstName, lastName, contact, bloodType, dob, disease, key, thumbnail, regDosing, drugAllergy, hospitalName, status;
 
     public PatientListModelFB() {
     }
 
-    public PatientListModelFB(String firstName, String lastName, String contact, String bloodType, String dob, String disease, String key, String thumbnail, String regDosing, String drugAllergy, String hospitalName) {
+    public PatientListModelFB(String firstName, String lastName, String contact, String bloodType, String dob, String disease, String key, String thumbnail, String regDosing, String drugAllergy, String hospitalName, String status) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.contact = contact;
@@ -28,6 +28,7 @@ public class PatientListModelFB {
         this.regDosing = regDosing;
         this.drugAllergy = drugAllergy;
         this.hospitalName = hospitalName;
+        this.status = status;
     }
 
     public Map<String, Object> toMap(){
@@ -43,6 +44,7 @@ public class PatientListModelFB {
         result.put("regDosing", regDosing);
         result.put("drugAllergy", drugAllergy);
         result.put("hospitalName", hospitalName);
+        result.put("status", status);
         return result;
     }
 }
