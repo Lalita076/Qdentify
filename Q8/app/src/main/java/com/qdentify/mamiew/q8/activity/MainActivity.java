@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
+    //private FirebaseUser user;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if (firebaseAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, LoginActivity.class));
+
+        }
+
+        userId = firebaseAuth.getCurrentUser().getUid();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -79,20 +91,13 @@ public class MainActivity extends AppCompatActivity {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //       .setAction("Action", null).show();
                 Intent addPerson = new Intent(MainActivity.this, AddPatientActivity.class);
+                addPerson.putExtra("userId",userId);
                 startActivity(addPerson);
 
             }
         });
 
-        firebaseAuth = FirebaseAuth.getInstance();
 
-        if (firebaseAuth.getCurrentUser() == null) {
-            finish();
-            startActivity(new Intent(this, LoginActivity.class));
-
-        }
-
-        user = firebaseAuth.getCurrentUser();
 
         //Toast.makeText(this,"Welcome "+ user.getEmail(),Toast.LENGTH_SHORT);
 

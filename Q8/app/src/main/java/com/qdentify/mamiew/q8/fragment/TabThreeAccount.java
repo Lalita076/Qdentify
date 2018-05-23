@@ -51,7 +51,7 @@ public class TabThreeAccount extends Fragment implements View.OnClickListener {
 
         initInstances(rootView);
 
-        email.setText(user.getEmail());
+//        email.setText(user.getEmail());
 
         //bindingData();
         //bind();

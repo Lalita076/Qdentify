@@ -59,6 +59,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
     public String status;
     private Uri downloadUrl;
 
+    private String _caregiverId ,_Uid ;
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -78,23 +79,10 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add patient Profile");
+        Intent _Uid = getIntent();
+        _caregiverId = _Uid.getStringExtra("userId");
 
-        status = "0";
         initInstances();
-
-        choosePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
-        uploadPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadFile();
-
-            }
-        });
     }
 
     private void initInstances() {
@@ -125,6 +113,8 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient").child("data");
 
         datePick.setOnClickListener(this);
+        choosePic.setOnClickListener(this);
+
     }
 
     private void save() {
@@ -138,8 +128,6 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         String patientDrugAllergy = drugAllergy.getText().toString().trim();
         String patientHospital = hospitalName.getText().toString().trim();
         String patientThumbnail = downloadUrl.toString();
-        String patientStatus = status.toString().trim();
-
 
         String newPatient = firebaseDatabase.push().getKey();
         Toast.makeText(this,"Patient key :"+newPatient,Toast.LENGTH_SHORT).show();
@@ -155,7 +143,8 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         map.put("drugAllergy", patientDrugAllergy);
         map.put("hospitalName", patientHospital);
         map.put("thumbnail",patientThumbnail);
-        map.put("status",patientStatus);
+        map.put("status", "inactive");
+        map.put("caregiverId",_caregiverId);
 
         firebaseDatabase.child(newPatient).setValue(map);
     }
@@ -194,6 +183,8 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         if (id == R.id.ok) {
             uploadFile();
             Toast.makeText(this, "Add patient success", Toast.LENGTH_SHORT).show();
+            Intent gohome = new Intent(AddPatientActivity.this,MainActivity.class);
+            startActivity(gohome);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -209,6 +200,9 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
                 }
             }, year, month, day);
             datePickerDialog.show();
+        }
+        if(v==choosePic){
+            openFileChooser();
         }
     }
 

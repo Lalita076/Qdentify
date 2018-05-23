@@ -40,14 +40,6 @@
                 android:text="Choose"
                 android:textColor="@color/colorPrimary" />
 
-            <Button
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:id="@+id/btn_upload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Upload"
-                android:textColor="@color/colorPrimary" />
-
         </LinearLayout>
 
         <LinearLayout
