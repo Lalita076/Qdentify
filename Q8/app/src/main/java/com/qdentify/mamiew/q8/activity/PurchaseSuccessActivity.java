@@ -11,8 +11,7 @@ import com.qdentify.mamiew.q8.dao.PurchaseObject;
 import org.w3c.dom.Text;
 
 public class PurchaseSuccessActivity extends AppCompatActivity {
-    TextView pID, name, tagType, paymentMethod, shippingMethod, address, total;
-    private Intent intent;
+    private TextView name, tagType, paymentMethod, shippingMethod, address, total;
     private PurchaseObject purchaseObjectParcelable;
 
     @Override
@@ -20,7 +19,7 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_success);
 
-        intent = getIntent();
+        Intent intent = getIntent();
         purchaseObjectParcelable = (PurchaseObject)
                 intent.getParcelableExtra("purchaseObjParcelable");
 
@@ -41,6 +40,5 @@ public class PurchaseSuccessActivity extends AppCompatActivity {
         shippingMethod.setText(purchaseObjectParcelable.getShippingMethod());
         address.setText(purchaseObjectParcelable.getAddress());
         total.setText(purchaseObjectParcelable.getTotal());
-
     }
 }

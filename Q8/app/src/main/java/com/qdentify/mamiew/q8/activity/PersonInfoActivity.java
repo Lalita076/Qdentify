@@ -19,6 +19,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +36,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonInfoActivity extends AppCompatActivity implements  CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class PersonInfoActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     Toolbar toolbar;
     TextView tvHeadName, tvBloodType, tvDob, tvDisease, tvDrugAllergy, tvRegDose, tvHospital, tvContact;
     ImageView imThumbnail;
@@ -68,7 +69,7 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         hospital = intent.getStringExtra("hospital");
         thumbnail = intent.getStringExtra("thumbnail");
         status = intent.getStringExtra("status");
-        Toast.makeText(this,"Key is  "+ key,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Key is  " + key, Toast.LENGTH_SHORT).show();
 
         bindingData();
 
@@ -77,12 +78,26 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
     }
 
     private void checkSwitch() {
-        if(status.equals("active")){
+        if (status.equals("active")) {
             firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key);
             swActiveQR.setChecked(true);
-        } else if(status.equals("inactive")) {
+        }
+        if (status.equals("inactive")) {
             firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key);
             swActiveQR.setChecked(false);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked && status.equals("active")) {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key).child("status");
+            firebaseDatabase.setValue("active");
+            Toast.makeText(this, "QR is Active", Toast.LENGTH_SHORT).show();
+        } else {
+            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key).child("status");
+            firebaseDatabase.setValue("inactive");
+            Toast.makeText(this, "QR is Inactive", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -98,24 +113,22 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         Picasso.with(PersonInfoActivity.this).load(thumbnail).into(imThumbnail);
 
         checkSwitch();
-
     }
 
     private void initInstances() {
-        swActiveQR = (Switch)findViewById(R.id.sw_active);
+        swActiveQR = (Switch) findViewById(R.id.sw_active);
 
-        tvHeadName = (TextView)findViewById(R.id.tv_head_name);
-        tvBloodType =  (TextView)findViewById(R.id.tv_blood);
-        tvDob =  (TextView)findViewById(R.id.tv_dob);
-        tvDisease =  (TextView)findViewById(R.id.tv_disease);
-        tvDrugAllergy =  (TextView)findViewById(R.id.tv_drug_allergy);
-        tvRegDose = (TextView)findViewById(R.id.tv_reg_dosing);
-        tvHospital = (TextView)findViewById(R.id.tv_hospital);
-        tvContact = (TextView)findViewById(R.id.tv_contact);
-        imThumbnail = (ImageView)findViewById(R.id.im_thumbnail);
+        tvHeadName = (TextView) findViewById(R.id.tv_head_name);
+        tvBloodType = (TextView) findViewById(R.id.tv_blood);
+        tvDob = (TextView) findViewById(R.id.tv_dob);
+        tvDisease = (TextView) findViewById(R.id.tv_disease);
+        tvDrugAllergy = (TextView) findViewById(R.id.tv_drug_allergy);
+        tvRegDose = (TextView) findViewById(R.id.tv_reg_dosing);
+        tvHospital = (TextView) findViewById(R.id.tv_hospital);
+        tvContact = (TextView) findViewById(R.id.tv_contact);
+        imThumbnail = (ImageView) findViewById(R.id.im_thumbnail);
 
-        lastTreatCard = (CardView)findViewById(R.id.card_lasttreat);
-
+        lastTreatCard = (CardView) findViewById(R.id.card_lasttreat);
     }
 
     @Override
@@ -127,28 +140,22 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        /**if (id == R.id.action_edit) {
-            return true;
-        }
-        else if (id == R.id.action_delete) {
-            return true;
-        }**/
-        switch (id){
+        switch (id) {
             case R.id.action_edit:
-                Toast.makeText(this,"press edit",Toast.LENGTH_SHORT).show();
-                Intent editPatient = new Intent(PersonInfoActivity.this,PatientEditActivity.class);
+                Toast.makeText(this, "press edit", Toast.LENGTH_SHORT).show();
+                Intent editPatient = new Intent(PersonInfoActivity.this, PatientEditActivity.class);
                 //Toast.makeText(this, "Click Edit",Toast.LENGTH_SHORT).show();
                 startActivity(editPatient);
                 break;
             case R.id.action_delete:
-                Toast.makeText(this,"press delete",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "press delete", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_purchase_qr:
                 //Toast.makeText(this,"press purchase QR",Toast.LENGTH_SHORT).show();
-                Intent purchaseIntent = new Intent(PersonInfoActivity.this,PurchaseQRActivity.class);
-               // purchaseIntent.putExtra("pID",patientListDaoParcelable.getpID());
-                //purchaseIntent.putExtra("name",patientListDaoParcelable.getFirstName()+" "+patientListDaoParcelable.getLastName());
-                Toast.makeText(this, "Bundle OK",Toast.LENGTH_SHORT).show();
+                Intent purchaseIntent = new Intent(PersonInfoActivity.this, PurchaseQRActivity.class);
+                // purchaseIntent.putExtra("pID",patientListDaoParcelable.getpID());
+                purchaseIntent.putExtra("name",headName);
+                Toast.makeText(this, "Bundle OK", Toast.LENGTH_SHORT).show();
                 startActivity(purchaseIntent);
                 break;
         }
@@ -157,23 +164,8 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
 
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if(isChecked && status.equals("active")){
-            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key).child("status");
-            firebaseDatabase.setValue("active");
-            Toast.makeText(this,"QR is Active",Toast.LENGTH_SHORT).show();
-        }else {
-            firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("patient/data").child(key).child("status");
-            firebaseDatabase.setValue("inactive");
-            Toast.makeText(this, "QR is Inactive",Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
-    @Override
     public void onClick(View v) {
-        Intent lastTreat = new Intent(PersonInfoActivity.this,LastTreatActivity.class);
+        Intent lastTreat = new Intent(PersonInfoActivity.this, LastTreatActivity.class);
         startActivity(lastTreat);
     }
 

@@ -125,15 +125,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();
 							
-                        } else {
-                            if(task.getException() instanceof FirebaseAuthUserCollisionException){
-                                Toast.makeText(getApplicationContext(),"You are already register",Toast.LENGTH_SHORT);
-                            }else {
-                                Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
-                            }
-
-                            Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_LONG).show();
-
                         }
                         else{
                             Toast.makeText(RegisterActivity.this, "Could not register.. please try again", Toast.LENGTH_SHORT).show();
