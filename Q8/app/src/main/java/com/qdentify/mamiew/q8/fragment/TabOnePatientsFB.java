@@ -13,12 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.qdentify.mamiew.q8.R;
+import com.qdentify.mamiew.q8.activity.LoginActivity;
 import com.qdentify.mamiew.q8.activity.PersonInfoActivity;
 import com.qdentify.mamiew.q8.adapter.PatientListAdapterFB;
 import com.qdentify.mamiew.q8.dao.PatientListModelFB;
@@ -38,6 +41,10 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
+    private FirebaseAuth firebaseAuth;
+    private String userId;
+    private Query query;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,8 +54,13 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        userId = firebaseAuth.getCurrentUser().getUid();
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("patient/data");
+
+        query = databaseReference.orderByChild("caregiverId").equalTo(userId);
 
         result = new ArrayList<>();
         key = new ArrayList<>();
@@ -68,7 +80,7 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
     }
 
     private void bindingData() {
-        databaseReference.addChildEventListener(new ChildEventListener() {
+        query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 result.add(dataSnapshot.getValue(PatientListModelFB.class));

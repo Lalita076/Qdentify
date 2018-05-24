@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     FirebaseAuth firebaseAuth;
 
     DatabaseReference firebaseDatabase;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
         firebaseAuth = FirebaseAuth.getInstance();
-        if(firebaseAuth.getCurrentUser() !=null){
+        if (firebaseAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
@@ -62,12 +64,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void initInstances() {
 
+	
+	
+        btnRegister = (Button) findViewById(R.id.btn_register);
+        btnToSignIn = (Button) findViewById(R.id.btn_signin);
 
-        btnRegister = (Button)findViewById(R.id.btn_register);
-        btnToSignIn = (Button)findViewById(R.id.btn_signin);
-
-        etEmail = (EditText)findViewById(R.id.et_mail);
-        etPassword = (EditText)findViewById(R.id.et_password);
+        etEmail = (EditText) findViewById(R.id.et_mail);
+        etPassword = (EditText) findViewById(R.id.et_password);
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("users");
 
@@ -89,19 +92,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         /*Intent login = new Intent(RegisterActivity.this,MainActivity.class);
         startActivity(login);*/
+
     }
 
     private void register() {
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)){
+        if (TextUtils.isEmpty(email)) {
             //emial is empty
-            Toast.makeText(this, "Please enter mail", Toast.LENGTH_SHORT).show();;
+            Toast.makeText(this, "Please enter mail", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(password)){
-            Toast.makeText(this,"Please enter password",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
         progressDialog.setMessage("Registering please wait..");
@@ -111,6 +115,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if(task.isSuccessful()){
                             String user_id2 = firebaseAuth.getCurrentUser().getUid();
                             firebaseDatabase.child(user_id2).child("userEmail").setValue(email);
@@ -118,8 +123,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             finish();
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(RegisterActivity.this, "Register Successfully", Toast.LENGTH_SHORT).show();
+							
                         }
                         else{
                             Toast.makeText(RegisterActivity.this, "Could not register.. please try again", Toast.LENGTH_SHORT).show();
