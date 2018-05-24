@@ -79,6 +79,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add patient Profile");
+
         Intent _Uid = getIntent();
         _caregiverId = _Uid.getStringExtra("userId");
 
@@ -105,7 +106,6 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         day = mCurrrntDate.get(Calendar.DAY_OF_MONTH);
         month = mCurrrntDate.get(Calendar.MONTH);
         year = mCurrrntDate.get(Calendar.YEAR);
-
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -143,8 +143,9 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         map.put("drugAllergy", patientDrugAllergy);
         map.put("hospitalName", patientHospital);
         map.put("thumbnail",patientThumbnail);
-        map.put("status", "inactive");
-        map.put("caregiverId",_caregiverId);
+        map.put("status", "active");
+        map.put("caregiverId", _caregiverId);
+        map.put("lastTreat", "-" );
 
         firebaseDatabase.child(newPatient).setValue(map);
     }

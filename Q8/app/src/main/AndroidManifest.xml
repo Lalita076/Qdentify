@@ -20,9 +20,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.AddPatientActivity" />
         <activity android:name=".activity.PersonInfoActivity" />
         <activity
@@ -32,8 +30,9 @@
         <activity android:name=".activity.PurchaseQRActivity" />
         <activity android:name=".activity.PurchaseSuccessActivity" />
         <activity android:name=".activity.LastTreatActivity" />
+        <activity android:name=".activity.LastTreatEditActivity"/>
         <activity android:name=".activity.EditCareGiverActivity" />
-        <activity android:name=".activity.AddLastTreateActivity" />
+        <activity android:name=".activity.LastTreatAddActivity" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,7 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegisterActivity"></activity>
+        <activity android:name=".activity.PatientEditActivity" />
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.LastTreatViewActivity"></activity>
     </application>
 
 </manifest>

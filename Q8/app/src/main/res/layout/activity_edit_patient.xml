@@ -26,17 +26,18 @@
             android:orientation="vertical"
             android:paddingTop="20dp">
 
-            <ImageView
-                android:id="@+id/image"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/im_thumbnail"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@drawable/bg_gray" />
 
             <Button
+                android:id="@+id/btn_choose"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload"
+                android:text="choose"
                 android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
@@ -280,7 +281,7 @@
                         android:textColor="@color/colorPrimary" />
 
                     <EditText
-                        android:id="@+id/et_drug_allergies"
+                        android:id="@+id/et_drug_allergy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="drug allergies"
@@ -317,21 +318,13 @@
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:src="@drawable/ic_local_hospital_black_24dp"/>
-                        <TextView
-                            android:id="@+id/tv_hospital"
+                        <EditText
+                            android:id="@+id/et_hospital"
                             android:layout_width="0dp"
                             android:layout_weight="9"
                             android:layout_height="wrap_content"
-                            android:padding="15dp"
-                            android:clickable="true"
-                            android:text="Select Hospital"
-                            android:textSize="16sp" />
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+                            android:inputType="text"
+                            android:hint="hospital name"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

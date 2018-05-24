@@ -24,6 +24,7 @@ import java.util.zip.Inflater;
 public class PatientListAdapterFB extends RecyclerView.Adapter<PatientListAdapterFB.ViewHolder> {
     private List<PatientListModelFB> patientListModelFBList;
     private OnItemClickListener pListener;
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }

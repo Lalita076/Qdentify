@@ -60,8 +60,6 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
         pAadapter = new PatientListAdapterFB(result);
         pRecyclerView.setAdapter(pAadapter);
 
-
-
         bindingData();
 
         pAadapter.setOnItemClickListener(TabOnePatientsFB.this);
@@ -110,7 +108,8 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
         Log.d("TabOne","pParcelable going");
         PatientListModelFB paParcelable = new PatientListModelFB();
         info.putExtra("key", key.get(position));
-        info.putExtra("name", result.get(position).firstName+" "+result.get(position).lastName);
+        info.putExtra("firstName", result.get(position).firstName);
+        info.putExtra("lastName", result.get(position).lastName);
         info.putExtra("dob", result.get(position).dob);
         info.putExtra("bloodType", result.get(position).bloodType);
         info.putExtra("contact", result.get(position).contact);

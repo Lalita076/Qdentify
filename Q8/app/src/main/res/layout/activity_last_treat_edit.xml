@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.AddLastTreateActivity">
+    tools:context=".activity.LastTreatViewActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_last_treat"
+        android:id="@+id/toolbar_last_treat_edit"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
@@ -55,10 +56,11 @@
                         android:src="@drawable/ic_date" />
 
                     <TextView
-                        android:id="@+id/tv_dob"
+                        android:id="@+id/tv_date"
                         android:paddingLeft="25dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clickable="true"
                         android:hint="DD/MM/YYYY"
                         android:inputType="date" />
                 </LinearLayout>
@@ -172,7 +174,7 @@
                         android:id="@+id/et_doctor_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="hospital name"
+                        android:hint="doctor name"
                         android:inputType="text" />
 
                 </LinearLayout>

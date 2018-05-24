@@ -40,7 +40,7 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
     TextView tvHeadName, tvBloodType, tvDob, tvDisease, tvDrugAllergy, tvRegDose, tvHospital, tvContact;
     ImageView imThumbnail;
     Switch swActiveQR;
-    String key, headName, bloodType, dob, disease, drugAllergy, regDosing, hospital, contact, thumbnail, status;
+    String key, firstName, lastName, headName, bloodType, dob, disease, drugAllergy, regDosing, hospital, contact, thumbnail, status;
     CardView lastTreatCard;
 
     private DatabaseReference firebaseDatabase;
@@ -58,7 +58,9 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
 
         Intent intent = getIntent();
         key = intent.getStringExtra("key");
-        headName = intent.getStringExtra("name");
+        //headName = intent.getStringExtra("firstName");
+        firstName = intent.getStringExtra("firstName");
+        lastName = intent.getStringExtra("lastName");
         dob = intent.getStringExtra("dob");
         bloodType = intent.getStringExtra("bloodType");
         contact = intent.getStringExtra("contact");
@@ -68,7 +70,7 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         hospital = intent.getStringExtra("hospital");
         thumbnail = intent.getStringExtra("thumbnail");
         status = intent.getStringExtra("status");
-        Toast.makeText(this,"Key is  "+ key,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"Key is  "+ key,Toast.LENGTH_SHORT).show();
 
         bindingData();
 
@@ -87,7 +89,7 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
     }
 
     private void bindingData() {
-        tvHeadName.setText(headName);
+        tvHeadName.setText(firstName+" "+lastName);
         tvDob.setText(dob);
         tvBloodType.setText(bloodType);
         tvContact.setText(contact);
@@ -136,8 +138,19 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
         switch (id){
             case R.id.action_edit:
                 Toast.makeText(this,"press edit",Toast.LENGTH_SHORT).show();
-                Intent editPatient = new Intent(PersonInfoActivity.this,PatientEditActivity.class);
-                //Toast.makeText(this, "Click Edit",Toast.LENGTH_SHORT).show();
+                Intent editPatient = new Intent(this,PatientEditActivity.class);
+                Toast.makeText(this, "Click Edit",Toast.LENGTH_SHORT).show();
+                editPatient.putExtra("patientId", key);
+                editPatient.putExtra("firstName", firstName);
+                editPatient.putExtra("lastName", lastName);
+                editPatient.putExtra("dob", dob);
+                editPatient.putExtra("bloodType", bloodType);
+                editPatient.putExtra("contact", contact);
+                editPatient.putExtra("disease", disease);
+                editPatient.putExtra("regDosing", regDosing);
+                editPatient.putExtra("drugAllergy", drugAllergy);
+                editPatient.putExtra("hospital", hospital);
+                editPatient.putExtra("thumbnail", thumbnail);
                 startActivity(editPatient);
                 break;
             case R.id.action_delete:
@@ -173,7 +186,10 @@ public class PersonInfoActivity extends AppCompatActivity implements  CompoundBu
 
     @Override
     public void onClick(View v) {
+
         Intent lastTreat = new Intent(PersonInfoActivity.this,LastTreatActivity.class);
+        lastTreat.putExtra("patientId", key);
+        Toast.makeText(this,"Key is  "+ key,Toast.LENGTH_SHORT).show();
         startActivity(lastTreat);
     }
 
