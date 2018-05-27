@@ -71,7 +71,7 @@ public class LastTreatActivity extends AppCompatActivity implements LastTreatAda
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 result.add(dataSnapshot.getValue(LastTreatModel.class));
-                Toast.makeText(LastTreatActivity.this,"Doctor " +dataSnapshot.child("doctorName").getValue(),Toast.LENGTH_SHORT).show();
+                //.makeText(LastTreatActivity.this,"Doctor " +dataSnapshot.child("doctorName").getValue(),Toast.LENGTH_SHORT).show();
                 ltAadapter.notifyDataSetChanged();
                 ltKey.add(dataSnapshot.getKey());
 
@@ -118,7 +118,7 @@ public class LastTreatActivity extends AppCompatActivity implements LastTreatAda
     }
 
     private void click() {
-        Toast.makeText(this,"add history ",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"add history ",Toast.LENGTH_SHORT).show();
         Intent add = new Intent(LastTreatActivity.this, LastTreatAddActivity.class);
         add.putExtra("patientId", patientId);
         startActivity(add);
@@ -126,7 +126,7 @@ public class LastTreatActivity extends AppCompatActivity implements LastTreatAda
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this, "You click on card", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "You click on card", Toast.LENGTH_SHORT).show();
         Intent info = new Intent(LastTreatActivity.this, LastTreatViewActivity.class);
 
         info.putExtra("key", ltKey.get(position));
@@ -134,7 +134,7 @@ public class LastTreatActivity extends AppCompatActivity implements LastTreatAda
         info.putExtra("hospital", result.get(position).hospital);
         info.putExtra("doctor", result.get(position).doctorName);
         info.putExtra("symptom", result.get(position).symptom);
-        Toast.makeText(this, "Doctor is" +result.get(position).doctorName, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Doctor is" +result.get(position).doctorName, Toast.LENGTH_SHORT).show();
 
         startActivity(info);
     }

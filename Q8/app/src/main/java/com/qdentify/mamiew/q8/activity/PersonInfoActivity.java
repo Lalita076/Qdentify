@@ -106,7 +106,8 @@ public class PersonInfoActivity extends AppCompatActivity implements CompoundBut
     }
 
     private void bindingData() {
-        tvHeadName.setText(firstName+" "+lastName);
+        headName=firstName+" "+lastName;
+        tvHeadName.setText(headName);
         tvDob.setText(dob);
         tvBloodType.setText(bloodType);
         tvContact.setText(contact);
@@ -162,8 +163,8 @@ public class PersonInfoActivity extends AppCompatActivity implements CompoundBut
                 editPatient.putExtra("hospital", hospital);
                 editPatient.putExtra("thumbnail", thumbnail);
 
-                Toast.makeText(this, "press edit", Toast.LENGTH_SHORT).show();
-                Intent editPatient = new Intent(PersonInfoActivity.this, PatientEditActivity.class);
+                //Toast.makeText(this, "press edit", Toast.LENGTH_SHORT).show();
+                //Intent editPatient = new Intent(PersonInfoActivity.this, PatientEditActivity.class);
                 //Toast.makeText(this, "Click Edit",Toast.LENGTH_SHORT).show();
 
                 startActivity(editPatient);
@@ -176,6 +177,7 @@ public class PersonInfoActivity extends AppCompatActivity implements CompoundBut
                 Intent purchaseIntent = new Intent(PersonInfoActivity.this, PurchaseQRActivity.class);
                 // purchaseIntent.putExtra("pID",patientListDaoParcelable.getpID());
                 purchaseIntent.putExtra("name",headName);
+                purchaseIntent.putExtra("patientId", key);
                 Toast.makeText(this, "Bundle OK", Toast.LENGTH_SHORT).show();
                 startActivity(purchaseIntent);
                 break;

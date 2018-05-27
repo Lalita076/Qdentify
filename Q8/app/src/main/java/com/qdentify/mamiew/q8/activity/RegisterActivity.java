@@ -120,6 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             String user_id2 = firebaseAuth.getCurrentUser().getUid();
                             firebaseDatabase.child(user_id2).child("userEmail").setValue(email);
                             firebaseDatabase.child(user_id2).child("userPassword").setValue(password);
+                            firebaseDatabase.child(user_id2).child("userAddress").setValue(" ");
                             finish();
 
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));

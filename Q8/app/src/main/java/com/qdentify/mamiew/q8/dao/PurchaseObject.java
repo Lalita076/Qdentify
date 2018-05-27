@@ -6,12 +6,21 @@ import android.os.Parcelable;
 public class PurchaseObject implements Parcelable{
 
     private String pID, name, tagType, paymentMethod, shippingMethod, address;
-    private int total;
+    private String total;
 
     public PurchaseObject(){
 
     }
 
+    public PurchaseObject(String pID, String name, String tagType, String paymentMethod, String shippingMethod, String address, String total) {
+        this.pID = pID;
+        this.name = name;
+        this.tagType = tagType;
+        this.paymentMethod = paymentMethod;
+        this.shippingMethod = shippingMethod;
+        this.address = address;
+        this.total = total;
+    }
 
     protected PurchaseObject(Parcel in) {
         pID = in.readString();
@@ -20,7 +29,7 @@ public class PurchaseObject implements Parcelable{
         paymentMethod = in.readString();
         shippingMethod = in.readString();
         address = in.readString();
-        total = in.readInt();
+        total = in.readString();
     }
 
     public static final Creator<PurchaseObject> CREATOR = new Creator<PurchaseObject>() {
@@ -83,11 +92,11 @@ public class PurchaseObject implements Parcelable{
         this.address = address;
     }
 
-    public int getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 
@@ -104,6 +113,6 @@ public class PurchaseObject implements Parcelable{
         dest.writeString(paymentMethod);
         dest.writeString(shippingMethod);
         dest.writeString(address);
-        dest.writeInt(total);
+        dest.writeString(total);
     }
 }

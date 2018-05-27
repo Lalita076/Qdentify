@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 
+import com.bumptech.glide.load.engine.bitmap_recycle.ByteArrayAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,9 +35,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.qdentify.mamiew.q8.R;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -58,6 +65,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
     private int day, month, year;
     public String status;
     private Uri downloadUrl;
+    private Uri qrUri;
 
     private String _caregiverId ,_Uid ;
 
@@ -70,6 +78,8 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
     private StorageReference storageReference;
 
     private Toolbar toolbar;
+
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +138,12 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         String patientDrugAllergy = drugAllergy.getText().toString().trim();
         String patientHospital = hospitalName.getText().toString().trim();
         String patientThumbnail = downloadUrl.toString();
+        //String patientQR = qrUri.toString();
 
         String newPatient = firebaseDatabase.push().getKey();
-        Toast.makeText(this,"Patient key :"+newPatient,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"Patient key :"+newPatient,Toast.LENGTH_SHORT).show();
+
+        generateQR(newPatient);
 
         Map<String, Object> map = new HashMap<>();
         map.put("firstName", patientName);
@@ -146,6 +159,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
         map.put("status", "active");
         map.put("caregiverId", _caregiverId);
         map.put("lastTreat", "-" );
+        //map.put("qrCode", patientQR);
 
         firebaseDatabase.child(newPatient).setValue(map);
     }
@@ -224,7 +238,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
                         {
 
                             progressDialog.dismiss();
-                            Toast.makeText(AddPatientActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(AddPatientActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
 
                             downloadUrl = taskSnapshot.getDownloadUrl();
                             save();
@@ -236,7 +250,7 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
                         public void onFailure(@NonNull Exception e)
                         {
                             progressDialog.dismiss();
-                            Toast.makeText(AddPatientActivity.this, "Failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(AddPatientActivity.this, "Failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
@@ -251,6 +265,42 @@ public class AddPatientActivity extends AppCompatActivity implements View.OnClic
                     });
 
         }
+    }
+
+    private void generateQR(String key) {
+        String url = "data-e5cd3.firebaseapp.com";
+        String text2QR = url+"/?key="+key;
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(text2QR, BarcodeFormat.QR_CODE,200,200);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            //image.setImageBitmap(bitmap);
+        }
+        catch (WriterException e){
+            e.printStackTrace();
+        }
+
+
+        final StorageReference qrRef = storageReference.child("qr_storage/"/*+ UUID.randomUUID().toString()*/).child(UUID.randomUUID().toString());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = qrRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                //Toast.makeText(AddPatientActivity.this, "QR failed" + exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //Toast.makeText(AddPatientActivity.this, "QR upload success", Toast.LENGTH_SHORT).show();
+                //qrUri = taskSnapshot.getDownloadUrl();
+            }
+        });
     }
 
 

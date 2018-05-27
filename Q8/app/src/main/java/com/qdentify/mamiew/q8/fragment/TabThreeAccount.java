@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,50 +25,49 @@ import com.google.firebase.database.ValueEventListener;
 import com.qdentify.mamiew.q8.R;
 import com.qdentify.mamiew.q8.activity.EditCareGiverActivity;
 import com.qdentify.mamiew.q8.activity.LoginActivity;
+import com.qdentify.mamiew.q8.activity.PurchaseHistoryActivity;
 import com.qdentify.mamiew.q8.dao.UserDataModel;
 
 public class TabThreeAccount extends Fragment implements View.OnClickListener {
-    //private Button btnLogout;
     private TextView userName, email, address;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference_user;
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
+    private String userId;
+
+    private CardView historyCard;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_three_account, container, false);
 
-        //firebaseDatabase = FirebaseDatabase.getInstance();
-        //databaseReference_user = firebaseDatabase.getReference().child("user/user-data/user1");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
 
         firebaseAuth = FirebaseAuth.getInstance();
+        userId = firebaseAuth.getCurrentUser().getUid();
 
 
-        //Toast.makeText(this,"Welcome "+ user.getEmail(),Toast.LENGTH_SHORT);
-
+        databaseReference_user = firebaseDatabase.getReference().child("users").child(userId);
         initInstances(rootView);
 
-//        email.setText(user.getEmail());
 
-        //bindingData();
-        //bind();
+        bind();
         return rootView;
     }
 
-    /*private void bind() {
+    private void bind() {
         databaseReference_user.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userName_data = (String) dataSnapshot.child("userName").getValue();
-                String email_data = (String) dataSnapshot.child("email").getValue();
-                String address_data = (String) dataSnapshot.child("address").getValue();
-                userName.setText(userName_data);
+                String email_data = (String) dataSnapshot.child("userEmail").getValue();
+                //String address_data = (String) dataSnapshot.child("userAddress").getValue();
+
                 email.setText(email_data);
-                address.setText(address_data);
+                //address.setText(address_data);
             }
 
             @Override
@@ -78,39 +78,20 @@ public class TabThreeAccount extends Fragment implements View.OnClickListener {
 
     }
 
-    /*
-        private void bindingData() {
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    UserDataModel value = dataSnapshot.getValue(UserDataModel.class);
-                    userName.setText(value.userName);
-                    email.setText(value.email);
-                    address.setText(value.address);
-                    Log.d("TabThree", "Value is "+value);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    */
     private void initInstances(View rootView) {
 
         email = (TextView) rootView.findViewById(R.id.tv_email);
-        address = (TextView) rootView.findViewById(R.id.tv_address);
+        //address = (TextView) rootView.findViewById(R.id.tv_address);
 
-        //btnLogout = (Button)rootView.findViewById(R.id.btn_logout);
-        //btnLogout.setOnClickListener(this);
+        historyCard = (CardView)rootView.findViewById(R.id.history_card);
 
+        historyCard.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
-        //if(v==btnLogout){       }
-
+        Intent goHistory = new Intent(getActivity(), PurchaseHistoryActivity.class);
+        startActivity(goHistory);
     }
 }

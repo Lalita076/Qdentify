@@ -94,8 +94,8 @@ public class LastTreatAddActivity extends AppCompatActivity implements View.OnCl
         Map<String, Object> map = new HashMap<>();
         map.put("symptom", symptomUpdate);
         map.put("hospital", hospitalUpdate);
-        map.put("doctor",doctorUpdate);
-        map.put("data",dateUpdate);
+        map.put("doctorName",doctorUpdate);
+        map.put("date",dateUpdate);
         firebaseDatabase.child("lastTreat").child(newLastTreat).setValue(map);
 
         Toast.makeText(this,"save",Toast.LENGTH_SHORT).show();

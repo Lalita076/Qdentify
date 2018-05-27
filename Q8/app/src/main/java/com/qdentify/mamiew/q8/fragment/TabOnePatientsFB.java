@@ -43,8 +43,8 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
 
     private FirebaseAuth firebaseAuth;
     private String userId;
-    private Query query;
 
+    private Query query;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class TabOnePatientsFB extends Fragment implements PatientListAdapterFB.O
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(getActivity(), "You click on card", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "You click on card", Toast.LENGTH_SHORT).show();
         Intent info = new Intent(getActivity(), PersonInfoActivity.class);
         Log.d("TabOne","pParcelable going");
         PatientListModelFB paParcelable = new PatientListModelFB();

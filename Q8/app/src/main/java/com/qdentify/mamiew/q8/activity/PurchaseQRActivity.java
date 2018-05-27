@@ -14,8 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.qdentify.mamiew.q8.R;
 import com.qdentify.mamiew.q8.dao.PurchaseObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SimpleTimeZone;
 
 public class PurchaseQRActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
@@ -23,13 +29,16 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
     private RadioButton rdPDF, rdPatch, rdPaypal, rdCredit, rdEms, rdRegister;
     private EditText quantity;
     private TextView headName, tvTotal, tvAddress;
-    private String userId, name, address = "126 Pracha Uthit Rd., Bang Mod, Thung Khru, Bangkok 10140, Thailand";
+    private String userId, patientId, name, address = "126 Pracha Uthit Rd., Bang Mod, Thung Khru, Bangkok 10140, Thailand";
     private int unit = 1, total = 0, tagTotal = 0, shippingTotal = 0;
     private PurchaseObject purchaseObject;
     private Intent intent;
     private LinearLayout loQuantity;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +52,12 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
         firebaseAuth = FirebaseAuth.getInstance();
         userId = firebaseAuth.getCurrentUser().getUid();
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("purchaseQR");
+
         intent = getIntent();
+        name = intent.getStringExtra("name");
+        patientId = intent.getStringExtra("patientId");
 
         initInstances();
 
@@ -51,7 +65,6 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
 
     private void initInstances() {
         //get bundle from PersonInfo Activity
-        name = intent.getStringExtra("name");
 
         headName = (TextView) findViewById(R.id.tv_head_name);
         tvTotal = (TextView) findViewById(R.id.tv_total);
@@ -68,6 +81,8 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
         total = tagTotal + shippingTotal;
         tvTotal.setText(total + " " + "Baht");
 
+        tvAddress.setText(address);
+
         //Create Parcelable to sent to Purchase success Activity
         purchaseObject = new PurchaseObject();
         rdPDF.setOnClickListener(purchaseOnclickListener);
@@ -82,16 +97,39 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v == btnPurchaseQR) {
+            save();
             Toast.makeText(this, "Purchase Success", Toast.LENGTH_SHORT).show();
             Intent purchase = new Intent(this, PurchaseSuccessActivity.class);
             purchaseObject.setpID(userId);
             purchaseObject.setName(name);
             purchaseObject.setAddress(address);
-            purchaseObject.setTotal(total);
+            purchaseObject.setTotal(tvTotal.getText().toString());
             purchase.putExtra("purchaseObjParcelable", purchaseObject);
             Log.d("Purchase Activity", "Parcelable success");
             startActivity(purchase);
         }
+    }
+
+    private void save() {
+        String tagType = purchaseObject.getTagType();
+        String shipMethod = purchaseObject.getShippingMethod();
+        String payMethod = purchaseObject.getPaymentMethod();
+        String totalSuccess = purchaseObject.getTotal();
+
+        String newPurchase = databaseReference.push().getKey();
+        //Toast.makeText(this,"Patient key :"+newPurchase,Toast.LENGTH_SHORT).show();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("name", name);
+        map.put("patientId", patientId);
+        map.put("tagType", tagType);
+        map.put("shipMethod", shipMethod);
+        map.put("payMethod", payMethod);
+        map.put("total", totalSuccess);
+
+        databaseReference.child(newPurchase).setValue(map);
+
     }
 
     RadioButton.OnClickListener purchaseOnclickListener;
@@ -101,42 +139,12 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onClick(View v) {
-                /*if(rdPDF.isChecked()){
-                    purchaseObject.setTagType("PDF");
-                    total += 50;
-                    tvTotal.setText(total + " " + "Baht");
-                    purchaseObject.setShippingMethod("-");
-                    purchaseObject.setTotal(total);
-                }
-                if(rdPatch.isChecked()){
-                    purchaseObject.setTagType("Patch Embroidery");
-                    unit = Integer.parseInt(quantity.getText().toString().trim());
-                    total += (100 * unit);
-                    tvTotal.setText(total + " " + "Baht");
-                }
-                if(rdEms.isChecked()){
-                    purchaseObject.setShippingMethod("EMS");
-                    total += 50;
-                    tvTotal.setText(total + " " + "Baht");
-                }
-                if(rdRegister.isChecked()){
-                    purchaseObject.setShippingMethod("Register");
-                    total += 30;
-                    tvTotal.setText(total + " " + "Baht");
-                }*/
-                if (rdPaypal.isChecked()) {
-                    purchaseObject.setPaymentMethod("Paypal");
-                }
-                if (rdCredit.isChecked()) {
-                    purchaseObject.setPaymentMethod("Credit Card");
-                }
                 if (rdPDF.isChecked() || rdPatch.isChecked()) {
                     if (rdPDF.isChecked()) {
                         purchaseObject.setTagType("PDF");
                         tagTotal = 50;
                         tvTotal.setText(total + " " + "Baht");
                         purchaseObject.setShippingMethod("-");
-                        purchaseObject.setTotal(total);
                     } else if (rdPatch.isChecked()) {
                         purchaseObject.setTagType("Patch Embroidery");
                         unit = Integer.parseInt(quantity.getText().toString().trim());
@@ -156,9 +164,18 @@ public class PurchaseQRActivity extends AppCompatActivity implements View.OnClic
                         tvTotal.setText(total + " " + "Baht");
                     }
                 }
+                if (rdPaypal.isChecked() || rdCredit.isChecked()) {
+                    if (rdPaypal.isChecked()) {
+                        purchaseObject.setPaymentMethod("Paypal");
+                    }
+                    if (rdCredit.isChecked()) {
+                        purchaseObject.setPaymentMethod("Credit Card");
+                    }
+                }
 
                 total = tagTotal + shippingTotal;
                 tvTotal.setText(total + " " + "Baht");
+                purchaseObject.setTotal(tvTotal.getText().toString());
             }
 
         };
